@@ -66,7 +66,7 @@
 		                        type: 'success',
 		                        message: '登录成功'
 		                    });
-							this.$router.push('manage')
+							this.$router.push('userList')
 						}else{
 							this.$message({
 		                        type: 'error',
@@ -91,7 +91,7 @@
                         type: 'success',
                         message: '检测到您之前登录过，将自动登录'
                     });
-					this.$router.push('manage')
+					this.$router.push('userList')
 				}
 			}
 		}
