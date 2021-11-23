@@ -8,12 +8,21 @@ const state = {
 	adminInfo: {
 		avatar: 'default.jpg'
 	},
+	token: localStorage.getItem('token') ? localStorage.getItem('token') : ''
 }
 
 const mutations = {
 	saveAdminInfo(state, adminInfo){
 		state.adminInfo = adminInfo;
-	}
+	},
+	setToken (state,token) {
+		state.token =token;
+		localStorage.setItem("token",token);     //存储token
+	  },
+	delToken (state) {
+		state.token = '';
+		localStorage.removeItem("token");    //删除token
+	  }
 }
 
 const actions = {
