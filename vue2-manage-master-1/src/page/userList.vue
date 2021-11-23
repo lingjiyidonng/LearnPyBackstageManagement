@@ -60,9 +60,7 @@ export default {
   },
   methods: {
     getUserList() {
-      axios.get("http://124.70.47.51/admin/user/getlist", {
-          headers: { "Authorization": 'Bearer '+ localStorage.getItem("token") },
-        })
+      axios.get("http://124.70.47.51/admin/user/getlist", )
         .then((res) => {
           this.tableData = res.data.data.userlist;
           console.log(res);

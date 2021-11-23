@@ -11,7 +11,7 @@
                   width="100">
                 </el-table-column> -->
                 <el-table-column
-                  label="阶段"
+                  label="编号"
                   property="courseid"
                   width="100">
                 </el-table-column>
@@ -21,11 +21,12 @@
                   >
                 </el-table-column>
                 <el-table-column
-                  property="coursedetail"
+                  
                   label="详细信息"
                   >
+                  <a href="detail">查看</a>
                 </el-table-column>
-                <el-table-column label="操作" >
+                <!-- <el-table-column label="操作" >
                   <template slot-scope="scope">
                     <el-button
                       size="small"
@@ -35,9 +36,9 @@
                       type="danger"
                       @click="handleDelete(scope.$index, scope.row)">删除</el-button>
                   </template>
-                </el-table-column>
+                </el-table-column> -->
             </el-table>
-            <div class="Pagination" style="text-align: left;margin-top: 10px;">
+            <!-- <div class="Pagination" style="text-align: left;margin-top: 10px;">
                 <el-pagination
                   @size-change="handleSizeChange"
                   @current-change="handleCurrentChange"
@@ -46,20 +47,19 @@
                   layout="total, prev, pager, next"
                   :total="count">
                 </el-pagination>
-            </div>
+            </div> -->
         </div>
     </div>
 </template>
 
 <script>
+    import axios from 'axios'
     import headTop from '../components/headTop'
     export default{
       data (){
         return{
           //获取课程列表
-          queryInfo:{
-            courseid:1
-          },
+          
           courselist:[],
           count:0
         }
@@ -71,16 +71,13 @@
         this.getCourseList()
       },
       methods:{
-        async getCourseList(){
-          const {data:res} =await this.$http.get('http://{{host}}/user/course',{
-            params:this.queryInfo
-          })
-          if(res.status !== 0){
-            return this.$message.error('获取课程列表失败！')
-          } 
-          this.courselist=res.data.course,
-
-          console.log(res)
+        getCourseList(){
+        axios.get("http://124.70.47.51/admin/course/getlist", )
+        .then((res) => {
+          this.courselist = res.data.data.courselist;
+      
+          
+        });
         }
       }
     }

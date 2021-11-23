@@ -3,28 +3,34 @@
         <head-top></head-top>
         <div class="table_container">
             <el-table
-                :data="tableData"
+                :data="problemlist"
                 highlight-current-row
                 style="width: 100%">
                 <el-table-column
                   label="编号"
-                  type="index"
+                  property="problemid"
+                  width="70">
+                </el-table-column>
+                <el-table-column
+                  property="question"
+                  label="Question"
+                  width="300"
+                >
+                </el-table-column>
+                <el-table-column
+                  property="hint"
+                  label="Hint">
+                </el-table-column>
+                <el-table-column
+                  property="level"
+                  label="Level"
                   width="100">
                 </el-table-column>
                 <el-table-column
-                  property="username"
-                  label="Question"
-                >
-                </el-table-column>
-                <el-table-column
-                  property="username"
-                  label="Hint"
-                >
-                </el-table-column>
-                <el-table-column
-                  property="telephonenumber"
+                  property="reference_code"
                   label="Solution"
                 >
+                <a href="reference_code">查看</a>
                 </el-table-column>
                 <el-table-column label="操作" >
                   <template slot-scope="scope">
@@ -53,28 +59,13 @@
 </template>
 
 <script>
+    import axios from "axios";
     import headTop from '../components/headTop'
     import {getUserList, getUserCount} from '@/api/getData'
     export default {
         data(){
             return {
-                tableData: [{
-                  registe_time: '2016-05-02',
-                  username: '王小虎',
-                  city: '上海市普陀区金沙江路 1518 弄'
-                }, {
-                  registe_time: '2016-05-04',
-                  username: '王小虎',
-                  city: '上海市普陀区金沙江路 1517 弄'
-                }, {
-                  registe_time: '2016-05-01',
-                  username: '王小虎',
-                  city: '上海市普陀区金沙江路 1519 弄'
-                }, {
-                  registe_time: '2016-05-03',
-                  username: '王小虎',
-                  city: '上海市普陀区金沙江路 1516 弄'
-                }],
+                problemlist: [],
                 currentRow: null,
                 offset: 0,
                 limit: 20,
@@ -89,18 +80,13 @@
             this.initData();
         },
         methods: {
-            async initData(){
-                try{
-                    const countData = await getUserCount();
-                    if (countData.status == 1) {
-                        this.count = countData.count;
-                    }else{
-                        throw new Error('获取数据失败');
-                    }
-                    this.getUsers();
-                }catch(err){
-                    console.log('获取数据失败', err);
-                }
+            initData(){
+                axios.get("http://124.70.47.51/admin/problem/getlist", )
+                .then((res) => {
+                this.problemlist = res.data.data.problemlist;
+                
+          
+        });
             },
             handleSizeChange(val) {
                 console.log(`每页 ${val} 条`);
