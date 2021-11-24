@@ -1,13 +1,14 @@
 <template>
   	<div class="login_page fillcontain">
 	  	<transition name="form-fade" mode="in-out">
-	  		<section class="form_contianer" v-show="showLogin">
+	  		<section class="form_contianer" >
 		  		<div class="manage_tip">
 		  			<p>学派后台管理系统</p>
 		  		</div>
 		    	<el-form :model="loginForm" :rules="rules" ref="loginForm">
+					<!-- 在el-form-item中通过prop来指定不同的验证规则 -->
 					<el-form-item prop="username">
-						<el-input v-model="loginForm.username" placeholder="用户名"><span>dsfsf</span></el-input>
+						<el-input placeholder="用户名" v-model="loginForm.username"><span></span></el-input>
 					</el-form-item>
 					<el-form-item prop="password">
 						<el-input type="password" placeholder="密码" v-model="loginForm.password"></el-input>
@@ -25,18 +26,21 @@
 </template>
 
 <script>
-	import {login, getAdminInfo} from '@/api/getData'
-	import {mapActions, mapState} from 'vuex'
-
+    import { mapMutations } from 'vuex';
+	import axios from 'axios'
 	export default {
 	    data(){
 			return {
+				//登录表单的数据绑定对象
 				loginForm: {
 					username: '',
 					password: '',
 				},
+				//表单的验证规则对象
 				rules: {
+					//这里的username与上面的prop相对应，来指定不同的验证规则
 					username: [
+						//requires:必填  blur(鼠标失去焦点)时触发，输出message消息 
 			            { required: true, message: '请输入用户名', trigger: 'blur' },
 			        ],
 					password: [
@@ -46,33 +50,53 @@
 				showLogin: false,
 			}
 		},
-		mounted(){
-			this.showLogin = true;
-			if (!this.adminInfo.id) {
-    			this.getAdminData()
-    		}
-		},
-		computed: {
-			...mapState(['adminInfo']),
-		},
+		
 		methods: {
-			...mapActions(['getAdminData']),
+			...mapMutations(['setToken']),
 			async submitForm(formName) {
+				let _this = this;
 				this.$refs[formName].validate(async (valid) => {
 					if (valid) {
-						const res = await login({user_name: this.loginForm.username, password: this.loginForm.password})
-						if (res.status == 1) {
-							this.$message({
-		                        type: 'success',
-		                        message: '登录成功'
-		                    });
-							this.$router.push('manage')
-						}else{
-							this.$message({
-		                        type: 'error',
-		                        message: res.message
-		                    });
-						}
+						//post请求传递三个参数
+						//请求地址
+						//传递的数据在请求体中传递
+						//axios默认发送的数据是json格式的
+						// get中params 是即将与请求一起发送的 URL 参数
+						//配置信息
+						//   headers
+						//      conttent-type：'application/json' 默认
+						//登录
+						
+						this.$axios.post('http://124.70.47.51/admin/login',{
+							name: "admin",
+							password: "123456"
+						},{
+							
+						})
+						.then(
+							function(respond){
+							
+								console.log( respond.data.data.token);
+								
+								_this.$store.commit('setToken', respond.data.data.token)
+								_this.$router.push('userList')
+								//  axios.defaults.headers.common['Authorization'] = res.headers.authorization
+
+							}
+						)
+						.catch(err => console.log(err));
+						// if (res.status == 1) {
+						// 	this.$message({
+		                //         type: 'success',
+		                //         message: '登录成功'
+		                //     });
+						// 	this.$router.push('userList')
+						// }else{
+						// 	this.$message({
+		                //         type: 'error',
+		                //         message: res.msg
+		                //     });
+						// }
 					} else {
 						this.$notify.error({
 							title: '错误',
@@ -84,17 +108,6 @@
 				});
 			},
 		},
-		watch: {
-			adminInfo: function (newValue){
-				if (newValue.id) {
-					this.$message({
-                        type: 'success',
-                        message: '检测到您之前登录过，将自动登录'
-                    });
-					this.$router.push('manage')
-				}
-			}
-		}
 	}
 </script>
 
