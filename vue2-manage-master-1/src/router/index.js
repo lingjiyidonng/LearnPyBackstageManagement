@@ -10,6 +10,7 @@ const userList = r => require.ensure([], () => r(require('@/page/userList')), 'u
 const courseList = r => require.ensure([], () => r(require('@/page/courseList')), 'courseList');
 const Level1 = r => require.ensure([], () => r(require('@/page/Level1')), 'Level1');
 const RecommendableProjects = r => require.ensure([], () => r(require('@/page/RecommendableProjects')), 'RecommendableProjects');
+const InternetWrom = r => require.ensure([], () => r(require('@/page/InternetWrom')), 'InternetWrom');
 const CodeReview = r => require.ensure([], () => r(require('@/page/CodeReview')), 'CodeReview');
 
 const routes = [
@@ -34,6 +35,9 @@ const routes = [
 		},{
 			path: '/RecommendableProjects',
 			component: RecommendableProjects,
+		},{
+			path: '/InternetWrom',
+			component: InternetWrom,
 		},{
 			path: '/CodeReview',
 			component: CodeReview,
