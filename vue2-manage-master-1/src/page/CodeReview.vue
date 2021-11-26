@@ -11,43 +11,46 @@
                   width="100">
                 </el-table-column> -->
                 <el-table-column
-                  label="提交时间">
+                  property="dt"
+                  label="提交时间"
+                  width="200">
+                </el-table-column>
+                <el-table-column
+                  property="codeid"
+                  label="代码ID"
+                  width="100">
+                </el-table-column>
+                <el-table-column
+                  property="user_id"
+                  label="用户ID"
+                  width="100">
                 </el-table-column>
                 <el-table-column
                   property="username"
-                  label="代码查看">
+                  label="用户名"
+                  width="100">
                 </el-table-column>
                 <el-table-column
-                  property="telephonenumber"
-                  label="用户">
+                  property="pc_id"
+                  label="题目/教程 ID"
+                  width="140">
                 </el-table-column>
-                <el-table-column label="操作" >
+                <el-table-column
+                  property="detail"
+                  label="代码查看"
+                  width="300">
+                </el-table-column>
+                <el-table-column 
+                label="操作">
                   <template slot-scope="scope">
                     <el-button
                       size="small"
-                      @click="handleEdit(scope.row)">编辑</el-button>
-                    <el-button
-                      size="small"
                       type="danger"
-                      @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+                      @click="handleDelete(scope.$index, scope.row)">同意</el-button>
                   </template>
                 </el-table-column>
-                <!-- <el-table-column
-                  property="registe_time"
-                  label="注册日期"
-                  width="220">
-                </el-table-column>
-                <el-table-column
-                  property="username"
-                  label="用户姓名"
-                  width="220">
-                </el-table-column>
-                <el-table-column
-                  property="city"
-                  label="注册地址">
-                </el-table-column> -->
             </el-table>
-            <div class="Pagination" style="text-align: left;margin-top: 10px;">
+            <!-- <div class="Pagination" style="text-align: left;margin-top: 10px;">
                 <el-pagination
                   @size-change="handleSizeChange"
                   @current-change="handleCurrentChange"
@@ -56,7 +59,7 @@
                   layout="total, prev, pager, next"
                   :total="count">
                 </el-pagination>
-            </div>
+            </div> -->
         </div>
     </div>
 </template>
@@ -64,26 +67,11 @@
 <script>
     import headTop from '../components/headTop'
     import {getUserList, getUserCount} from '@/api/getData'
+import axios from 'axios'
     export default {
         data(){
             return {
-                tableData: [{
-                  registe_time: '2016-05-02',
-                  username: '王小虎',
-                  city: '上海市普陀区金沙江路 1518 弄'
-                }, {
-                  registe_time: '2016-05-04',
-                  username: '王小虎',
-                  city: '上海市普陀区金沙江路 1517 弄'
-                }, {
-                  registe_time: '2016-05-01',
-                  username: '王小虎',
-                  city: '上海市普陀区金沙江路 1519 弄'
-                }, {
-                  registe_time: '2016-05-03',
-                  username: '王小虎',
-                  city: '上海市普陀区金沙江路 1516 弄'
-                }],
+                tableData: [],
                 currentRow: null,
                 offset: 0,
                 limit: 20,
@@ -97,40 +85,59 @@
         created(){
             this.initData();
         },
-        methods: {
-            async initData(){
-                try{
-                    const countData = await getUserCount();
-                    if (countData.status == 1) {
-                        this.count = countData.count;
-                    }else{
-                        throw new Error('获取数据失败');
+        methods:{
+            initData(){
+                axios.get("http://124.70.47.51/admin/code/getlist",)
+                .then((res)=>{
+                    this.tableData = res.data.data.codelist;
+                    for(var i=0;i<res.data.data.codelist.length;i++){
+                        if(res.data.data.codelist[i].problemid === null){
+                            this.tableData[i].pc_id = "课程ID："+String(res.data.data.codelist[i].courseid);
+                        }
+                        else{
+                            this.tableData[i].pc_id = "题目ID："+String(res.data.data.codelist[i].problemid);
+                        }
                     }
-                    this.getUsers();
-                }catch(err){
-                    console.log('获取数据失败', err);
-                }
-            },
-            handleSizeChange(val) {
-                console.log(`每页 ${val} 条`);
-            },
-            handleCurrentChange(val) {
-                this.currentPage = val;
-                this.offset = (val - 1)*this.limit;
-                this.getUsers()
-            },
-            async getUsers(){
-                const Users = await getUserList({offset: this.offset, limit: this.limit});
-                this.tableData = [];
-                Users.forEach(item => {
-                    const tableData = {};
-                    tableData.username = item.username;
-                    tableData.registe_time = item.registe_time;
-                    tableData.city = item.city;
-                    this.tableData.push(tableData);
                 })
+            },
+            handleDelete(index){
+                this.tableData.splice(index,1)
             }
-        },
+        }
+        // methods: {
+        //     async initData(){
+        //         try{
+        //             const countData = await getUserCount();
+        //             if (countData.status == 1) {
+        //                 this.count = countData.count;
+        //             }else{
+        //                 throw new Error('获取数据失败');
+        //             }
+        //             this.getUsers();
+        //         }catch(err){
+        //             console.log('获取数据失败', err);
+        //         }
+        //     },
+        //     handleSizeChange(val) {
+        //         console.log(`每页 ${val} 条`);
+        //     },
+        //     handleCurrentChange(val) {
+        //         this.currentPage = val;
+        //         this.offset = (val - 1)*this.limit;
+        //         this.getUsers()
+        //     },
+        //     async getUsers(){
+        //         const Users = await getUserList({offset: this.offset, limit: this.limit});
+        //         this.tableData = [];
+        //         Users.forEach(item => {
+        //             const tableData = {};
+        //             tableData.username = item.username;
+        //             tableData.registe_time = item.registe_time;
+        //             tableData.city = item.city;
+        //             this.tableData.push(tableData);
+        //         })
+        //     }
+        // },
     }
 </script>
 <style lang="less">

@@ -3,7 +3,7 @@
     <head-top></head-top>
     <div class="table_container">
       <el-table :data="tableData" highlight-current-row style="width: 100%">
-        <el-table-column label="编号" type="userid" width="100">
+        <el-table-column label="编号" property="userid" width="100">
         </el-table-column>
         <el-table-column property="username" label="用户名"> </el-table-column>
         <el-table-column label="头像">
@@ -64,10 +64,6 @@ export default {
         .then((res) => {
           this.tableData = res.data.data.userlist;
           console.log(res);
-          console.log(res.data.msg);
-          console.log(res.data.status);
-          console.log(res.data.data.userlist);
-          
         });
 
       // const {data:res} =await this.$http.get('http://{{host}}/user/course',{
