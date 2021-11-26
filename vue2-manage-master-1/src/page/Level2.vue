@@ -82,7 +82,7 @@
                     console.log(res.data.data.problemlist[0].level)
                     console.log(res.data.data.problemlist.length)
                     for(var i=0,j=0;i<res.data.data.problemlist.length;i++){
-                        if(res.data.data.problemlist[i].level === 1){
+                        if(res.data.data.problemlist[i].level === 2){
                         this.problemlist[j] = res.data.data.problemlist[i];
                         j++;
                         }
