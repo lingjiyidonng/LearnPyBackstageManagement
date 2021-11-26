@@ -9,8 +9,17 @@ const home = r => require.ensure([], () => r(require('@/page/home')), 'home');
 const userList = r => require.ensure([], () => r(require('@/page/userList')), 'userList');
 const courseList = r => require.ensure([], () => r(require('@/page/courseList')), 'courseList');
 const Level1 = r => require.ensure([], () => r(require('@/page/Level1')), 'Level1');
+const Level2 = r => require.ensure([], () => r(require('@/page/Level2')), 'Level2');
+const Level3 = r => require.ensure([], () => r(require('@/page/Level3')), 'Level3');
 const RecommendableProjects = r => require.ensure([], () => r(require('@/page/RecommendableProjects')), 'RecommendableProjects');
 const InternetWrom = r => require.ensure([], () => r(require('@/page/InternetWrom')), 'InternetWrom');
+const NetworkDevelopment = r => require.ensure([], () => r(require('@/page/NetworkDevelopment')), 'NetworkDevelopment');
+const Robot = r => require.ensure([], () => r(require('@/page/Robot')), 'Robot');
+const DataScience = r => require.ensure([], () => r(require('@/page/DataScience')), 'DataScience');
+const MachineLearning = r => require.ensure([], () => r(require('@/page/MachineLearning')), 'MachineLearning');
+const OpenCV = r => require.ensure([], () => r(require('@/page/OpenCV')), 'OpenCV');
+const DeepLearning = r => require.ensure([], () => r(require('@/page/DeepLearning')), 'DeepLearning');
+const Other = r => require.ensure([], () => r(require('@/page/Other')), 'Other');
 const CodeReview = r => require.ensure([], () => r(require('@/page/CodeReview')), 'CodeReview');
 
 const routes = [
@@ -33,11 +42,38 @@ const routes = [
 			path: '/Level1',
 			component: Level1,
 		},{
+			path: '/Level2',
+			component: Level2,
+		},{
+			path: '/Level3',
+			component: Level3,
+		},{
 			path: '/RecommendableProjects',
 			component: RecommendableProjects,
 		},{
 			path: '/InternetWrom',
 			component: InternetWrom,
+		},{
+			path: '/NetworkDevelopment',
+			component: NetworkDevelopment,
+		},{
+			path: '/Robot',
+			component: Robot,
+		},{
+			path: '/DataScience',
+			component: DataScience,
+		},{
+			path: '/MachineLearning',
+			component: MachineLearning,
+		},{
+			path: '/OpenCV',
+			component: OpenCV,
+		},{
+			path: '/DeepLearning',
+			component: DeepLearning,
+		},{
+			path: '/Other',
+			component: Other,
 		},{
 			path: '/CodeReview',
 			component: CodeReview,

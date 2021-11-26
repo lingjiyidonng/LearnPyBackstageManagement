@@ -72,7 +72,8 @@
             initData(){
                 axios.get("http://124.70.47.51/admin/project/getlist",)
                 .then((res)=>{
-                    this.tableData=res.data.msg.网络爬虫;
+
+                    this.tableData=res.data.msg.OpenCV;
                     console.log(res)
                 })
             }

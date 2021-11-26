@@ -21,15 +21,10 @@
                   property="hint"
                   label="Hint">
                 </el-table-column>
-                <el-table-column
-                  property="level"
-                  label="Level"
-                  width="100">
-                </el-table-column>
+               
                 <el-table-column
                   property="reference_code"
-                  label="Solution"
-                >
+                  label="Solution">
                 <a href="reference_code">查看</a>
                 </el-table-column>
                 <el-table-column label="操作" >
@@ -44,7 +39,7 @@
                   </template>
                 </el-table-column>
             </el-table>
-            <div class="Pagination" style="text-align: left;margin-top: 10px;">
+            <!-- <div class="Pagination" style="text-align: left;margin-top: 10px;">
                 <el-pagination
                   @size-change="handleSizeChange"
                   @current-change="handleCurrentChange"
@@ -53,7 +48,7 @@
                   layout="total, prev, pager, next"
                   :total="count">
                 </el-pagination>
-            </div>
+            </div> -->
         </div>
     </div>
 </template>
@@ -66,11 +61,11 @@
         data(){
             return {
                 problemlist: [],
-                currentRow: null,
-                offset: 0,
-                limit: 20,
-                count: 0,
-                currentPage: 1,
+                // currentRow: null,
+                // offset: 0,
+                // limit: 20,
+                // count: 0,
+                // currentPage: 1,
             }
         },
     	components: {
@@ -83,7 +78,16 @@
             initData(){
                 axios.get("http://124.70.47.51/admin/problem/getlist", )
                 .then((res) => {
-                this.problemlist = res.data.data.problemlist;
+                    console.log(res.data.data.problemlist[0].level)
+                    console.log(res.data.data.problemlist.length)
+                    for(var i=0,j=0;i<res.data.data.problemlist.length;i++){
+                        if(res.data.data.problemlist[i].level === 1){
+                        this.problemlist[j] = res.data.data.problemlist[i];
+                        j++;
+                        }
+                    }
+                    
+                
                 
           
         });
