@@ -101,7 +101,13 @@ import axios from 'axios'
                 })
             },
             handleDelete(index){
-                this.tableData.splice(index,1)
+                axios.post("http://124.70.47.51/admin/code/check", {
+                    codeid:this.tableData[index].codeid
+                }).then((res)=>{
+                    this.initData()
+                }
+                )
+                
             }
         }
         // methods: {

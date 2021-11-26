@@ -68,8 +68,8 @@
 						//登录
 						
 						this.$axios.post('http://124.70.47.51/admin/login',{
-							name: "admin",
-							password: "123456"
+							name: this.loginForm.username ,
+							password: this.loginForm.password
 						},{
 							
 						})
@@ -84,7 +84,9 @@
 
 							}
 						)
-						.catch(err => console.log(err));
+						.catch(
+							alert("请输入正确的用户名密码噢")
+						);
 						// if (res.status == 1) {
 						// 	this.$message({
 		                //         type: 'success',
