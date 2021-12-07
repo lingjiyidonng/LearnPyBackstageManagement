@@ -75,17 +75,19 @@
 						})
 						.then(
 							function(respond){
-							
-								console.log( respond.data.data.token);
-								
-								_this.$store.commit('setToken', respond.data.data.token)
+								if(respond.data.status===0 ){
+									_this.$store.commit('setToken', respond.data.data.token)
 								_this.$router.push('userList')
+								}
+								
+								else{
+									alert("请输入正确的用户名密码噢")
+								}
 								//  axios.defaults.headers.common['Authorization'] = res.headers.authorization
 
 							}
 						)
 						.catch(
-							alert("请输入正确的用户名密码噢")
 						);
 						// if (res.status == 1) {
 						// 	this.$message({

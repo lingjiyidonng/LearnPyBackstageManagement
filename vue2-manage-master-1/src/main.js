@@ -9,6 +9,36 @@ import qs from 'qs'
 Vue.prototype.$axios = axios    //全局注册，使用方法为:this.$axios
 Vue.prototype.qs = qs           //全局注册，使用方法为:this.qs
 
+// import showdown from 'showdown'
+import 'github-markdown-css'
+ 
+// 使用md文件
+Vue.prototype.md2html = (md)=> {
+  let converter = new showdown.Converter();
+  let text = md.toString();
+  let html = converter.makeHtml(text);
+  return html
+};
+
+// 全局注册
+import mavonEditor from 'mavon-editor';
+import 'mavon-editor/dist/css/index.css';
+
+// markdown样式
+import 'github-markdown-css';
+
+
+
+// use
+Vue.use(mavonEditor)
+new Vue({
+   'el': '#main',
+   data() {
+       return { value: '' }
+   }
+})
+
+
 Vue.config.productionTip = false;
 
 Vue.use(ElementUI);
