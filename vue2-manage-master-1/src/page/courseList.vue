@@ -18,13 +18,33 @@
                 <el-table-column
                   property="title"
                   label="标题"
-                  >
+                  width="600">
                 </el-table-column>
                 <el-table-column
-                  
-                  label="详细信息"
-                  >
-                  <a href="detail">查看</a>
+                  property="detail"
+                  label="详细信息">
+
+                  <template slot-scope="scope">
+                  <el-button size="small" @click="downloadFile(scope.row)">查看</el-button>
+                  <el-dialog
+                         title="编辑"
+                         :visible.sync="dialogVisible_edit"
+                         width="100%">
+                         <mavon-editor
+                          style="height: 100%"
+                          v-model="editorContent"
+                          :ishljs="true"
+                          ref=md
+                          @imgAdd="imgAdd"
+                          @imgDel="imgDel">
+                          </mavon-editor>
+                        <el-button type="primary" @click="submit()">提交</el-button>
+
+                        <!-- <button @click="submit">提交</button> -->
+                  </el-dialog>
+                  </template>
+
+                  <!-- <a href="detail">查看</a> -->
                 </el-table-column>
                 <!-- <el-table-column label="操作" >
                   <template slot-scope="scope">
@@ -49,22 +69,34 @@
                 </el-pagination>
             </div> -->
         </div>
+    <!-- <vue-markdown>{{input}}</vue-markdown> -->
+
     </div>
+   
 </template>
 
 <script>
+    import { mavonEditor } from 'mavon-editor'
+    import VueMarkdown from 'vue-markdown' 
+
+    import 'mavon-editor/dist/css/index.css'  
+    // import first from '../md/first.md'
+
     import axios from 'axios'
     import headTop from '../components/headTop'
     export default{
       data (){
         return{
+          dialogVisible_edit:false,
+          editorContent:'' ,
+          html:'', 
           //获取课程列表
-          
           courselist:[],
           count:0
         }
       },
       components: {
+        // first,
     		headTop,
     	},
       created(){
@@ -78,6 +110,25 @@
       
           
         });
+        },
+        downloadFile(row){
+          this.dialogVisible_edit=true
+          console.log(row.detail)
+          var url=row.detail
+          console.log("111")
+          console.log(url)
+          try{
+            var elemIF = document.createElement("iframe");    
+            elemIF.src = url;   
+            elemIF.style.display = "none";   
+            document.body.appendChild(elemIF);   
+          }catch(e){ 
+            zzrw.alert("下载异常！");
+          } 
+
+        },
+        submit(){
+            this.dialogVisible_edit=false
         }
       }
     }
@@ -97,6 +148,7 @@
         width: 50%;
     }
     .table_container{
+      
         padding: 20px;
     }
     .Pagination{

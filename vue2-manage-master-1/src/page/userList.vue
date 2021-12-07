@@ -13,13 +13,14 @@
         </el-table-column>
         <el-table-column property="codecount" label="代码提交次数">
         </el-table-column>
-        <el-table-column label="操作">
+        <el-table-column property='btncolor' label="操作">
           <template slot-scope="scope">
             <el-button
-              type="danger"
-              @click="handleDelete(scope.$index, scope.row)"
-              >加入黑名单</el-button
-            >
+              :type="getStyle(scope.row)"
+              @click="blacklist(scope.row)">
+            <!-- <b :dispaly="getwords(row)" >加入</b> -->
+          黑名单
+            </el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -45,6 +46,8 @@ export default {
   data() {
     return {
       tableData: [],
+      // tableData.btncolor ='success'
+      
       // currentRow: null,
       // offset: 0,
       // limit: 20,
@@ -62,14 +65,79 @@ export default {
     getUserList() {
       axios.get("http://124.70.47.51/admin/user/getlist", )
         .then((res) => {
+          // console.log(res)
           this.tableData = res.data.data.userlist;
-          console.log(res);
+          // for(var i=0;i<this.tableData.length;i++){
+          //   if(this.tableData[i].isban==='0'){
+          //     this.tableData[i].isban='success';
+          //   }
+          //   else{
+          //     this.tableData[i].isban='info';
+          //   }
+          // }
+          // console.log(res)
+          // console.log("111")
+          // console.log(this.tableData);
         });
 
       // const {data:res} =await this.$http.get('http://{{host}}/user/course',{
       //   params:this.queryInfo
       // })
     },
+    getStyle(row){
+      // console.log(row)
+      // console.log("22")
+      if(row.isban==='0'){
+        return "successi"
+      }
+      else{
+        return "infoi"
+      }
+    },
+    // getwords(row){
+    //   console.log(row)
+    //   console.log("11")
+
+    //   if(row.isban==='0'){
+    //     return ""
+    //   }
+    //   else{
+    //     return "none"
+    //   }
+    // },
+    blacklist(row){
+      
+      var param={
+        userid:row.userid
+      }
+      console.log("000")
+      console.log(row.isban)
+      console.log("000")
+
+      if(row.isban=='0'){
+        axios.post("http://124.70.47.51/admin/user/ban",param)
+      .then(res=>{
+        console.log(row.isban)
+        // row.blackbtn="Info"
+        this.getUserList()
+      })
+      .catch(res=>{
+        console.log(res)
+      })
+      }
+      else{
+        axios.post("http://124.70.47.51/admin/user/unban",param)
+      .then(res=>{
+        console.log(row.isban)
+        // row.blackbtn="Info"
+        this.getUserList()
+      })
+      .catch(res=>{
+        console.log(res)
+      })
+      }
+      
+    }
   },
 };
 // export default {
@@ -147,4 +215,14 @@ export default {
 .table_container {
   padding: 20px;
 }
+.el-button--successi{
+  color: #fff;
+  background: #eb8181;
+  border-color: #eb8181;
+  }
+.el-button--infoi{
+  color: #fff;
+  background: #909399;
+  border-color: #909399;
+  }
 </style>
